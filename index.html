@@ -1,55 +1,84 @@
 <!doctype html>
-<html lang="en" class="h-100">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Hugo 0.84.0">
-    <title>Sticky Footer Template · Bootstrap v5.0</title>
+<html lang="pt-br" class="h-100">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="thethales">
+  <meta name="generator" content="Hugo 0.84.0">
+  <title>NAP - Parser</title>
 
 
-    <!-- Bootstrap core CSS -->
-<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-    <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
+  <style>
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
+
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
       }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-    </style>
-
-    
-    <!-- Custom styles for this template -->
-    <link href="sticky-footer.css" rel="stylesheet">
-  </head>
-  <body class="d-flex flex-column h-100">
-    
-<!-- Begin page content -->
-<main class="flex-shrink-0">
-  <div class="container">
-    <h1 class="mt-5">Sticky footer</h1>
-    <p class="lead">Pin a footer to the bottom of the viewport in desktop browsers with this custom HTML and CSS.</p>
-    <p>Use <a href="../examples/sticky-footer-navbar/">the sticky footer with a fixed navbar</a> if need be, too.</p>
-  </div>
-</main>
-
-<footer class="footer mt-auto py-3 bg-light">
-  <div class="container">
-    <span class="text-muted">Place sticky footer content here.</span>
-  </div>
-</footer>
+    }
+  </style>
 
 
-    
-  </body>
+  <!-- Custom styles for this template -->
+  <link href="sticky-footer.css" rel="stylesheet">
+</head>
+
+<body class="d-flex flex-column h-100">
+
+  <!-- Begin page content -->
+  <main class="flex-shrink-0">
+    <div class="container">
+      <h1 class="mt-5">NAP Parser</h1>
+      <small>Parser do Protótipo de linguagem de marcação pausada para registros diários não consecutivos de
+        progresso sem obrigatoriedade de posicionamento cronológico.</small>
+    </div>
+
+    <div class="container">
+      <form>
+        <div class="form-group mt-5">
+          <label for="exampleFormControlTextarea1">Notações</label>
+          <textarea class="form-control" id="txtaNotacoes" rows="3"></textarea>
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button class="btn btn-primary mt-2" type="button">Transcrever</button>
+          </div>
+        </div>
+      </form>
+
+     
+      <div class="jumbotron p-4 mt-3">
+        <p class="mt-3 text-center font-italic text-secondary">Nada por aqui. Insira o texto de log na caixa acima e clique em transcrever</p>
+      </div>
+    </div>
+  </main>
+  
+
+
+
+  <footer class="footer mt-auto py-3 bg-light">
+    <div class="container">
+      <span class="text-muted">NAP - Sistema de Notações Aleatórias de Progresso</span>
+    </div>
+  </footer>
+
+
+
+</body>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+  integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+  integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
 </html>

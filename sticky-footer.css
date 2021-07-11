@@ -7,3 +7,8 @@
   max-width: 680px;
   padding: 0 15px;
 }
+
+.jumbotron{
+  background-color: #e9ecef;
+  border-radius: 15px;
+}
