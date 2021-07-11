@@ -7,7 +7,7 @@
   <meta name="description" content="">
   <meta name="author" content="thethales">
   <meta name="generator" content="Hugo 0.84.0">
-  <title>NAP - Parser</title>
+  <title>nap - Parser</title>
 
 
   <!-- Bootstrap core CSS -->
@@ -39,7 +39,7 @@
   <!-- Begin page content -->
   <main class="flex-shrink-0">
     <div class="container">
-      <h1 class="mt-5">NAP Parser</h1>
+      <h1 class="mt-5">nap Parser</h1>
       <small>Parser do Protótipo de linguagem de marcação pausada para registros diários não consecutivos de
         progresso sem obrigatoriedade de posicionamento cronológico.</small>
     </div>
@@ -65,7 +65,7 @@
   
   <footer class="footer mt-auto py-3 bg-light">
     <div class="container">
-      <span class="text-muted">NAP - Sistema de Notações Aleatórias de Progresso</span>
+      <span class="text-muted">nap - Sistema de Notações Aleatórias de Progresso</span>
     </div>
   </footer>
 
@@ -75,23 +75,68 @@
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <script>
+
+  $(document).ready(setUpTestCase('2'));
   $("#btnTranscrever").on('click',btnTranscrever_click);
 
+
+  function setUpTestCase(testCase){
+    /**
+     * Configura um caso de teste na UI
+     * */
+    var texto = '';
+    switch (testCase){
+      case '1':
+        //Uma linha
+        texto = "20210611:13H:CC:01:plantio:realizado em terra vegetal obitida do pomar";
+        break;
+      case '2':
+        //Duas linhas
+        texto = "20210611:13H:CC:01:plantio:realizado em terra vegetal obitida do pomar \r\n20210611:14H:CC:01:regagem:plantas foram regadas";
+        break;
+    }
+    $("#txtaNotacoes").val(texto);
+  };
+
   function btnTranscrever_click(){
-    
-    let texto = napTranscrever($("#txtaNotacoes").val());
+    let texto = napToHTML($("#txtaNotacoes").val());
     $("#parsedValueArea").children('p').addClass('invisible');
     $("#parsedValueArea").children('span').html(texto);
   }
 
 
-  function napTranscrever(texto){
+  function napToHTML(texto){
     /**
      * Protótipo
-     * Transcreve o conteúdo para texto legível e ordenado
+     * Transcreve o conteúdo para texto legível e ordenado em HTML
      **/
+     let charSeparadorChVal = ' -> ';
+     let charLineBrake = '<br>';
+     //-----------------
+     let parsedText = '';
+     
+     let lines = texto.split('\n');
 
-     return texto;
+     console.log(lines)
+     //Linhas
+     for (let l = 0; l < lines.length; l++){
+      let els_unitarios = lines[l].split(':');
+      
+      //Elementos Unitários
+      for (let i = 0; i <= els_unitarios.length; i++){
+        let j = i+1;
+        if(j<els_unitarios.length){
+          parsedText += els_unitarios[i];  
+          parsedText += charSeparadorChVal; 
+          parsedText += els_unitarios[j];
+          parsedText += charLineBrake;
+          i=j;
+        }
+      }//Fim Elementos Unitários
+      parsedText += charLineBrake;
+    }
+     //---------------
+     return parsedText;
   }
 
 
