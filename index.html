@@ -36,7 +36,7 @@
   <!-- Begin page content -->
   <main class="flex-shrink-0">
     <div class="container">
-      <h1 class="mt-5"><a href="https://github.com/thethales/nap">nap</a> Parser</h1>
+      <h1 class="mt-5"><a href="">nap</a> Parser</h1>
       <small>Parser do Protótipo de linguagem de marcação pausada para registros diários não consecutivos de
         progresso sem obrigatoriedade de posicionamento cronológico.</small>
     </div>
@@ -136,12 +136,13 @@
      **/
 
     //Processar palavras atalho
-    let dicionario = npGerDict(texto);
-    texto = npReplaceWords(dicionario, texto);
+    let textoNormalizado  = npNormalize(texto);
+    let dicionario        = npGerDict(textoNormalizado);
+    let textoSubstituido  = npReplaceWords(dicionario, textoNormalizado);
 
     //Linhas
     let parsedText = '';
-    let lines = texto.split('\n');
+    let lines = textoSubstituido.split('\n');
 
     for (let l = 0; l < lines.length; l++) {
       parsedText += npParseText(lines[l]) + window.nap.words.charHTMLLineBrake;
@@ -157,7 +158,7 @@
     let textoElements = texto.split(':');
     for (let i = 0; i <= textoElements.length; i++) {
       let j = i + 1;
-      if (j < textoElements.length) {
+      if ((j < textoElements.length) && (textoElements[i].length != 0)) {
         pTexto += textoElements[i];
         pTexto += window.nap.words.charSeparadorChVal;
         pTexto += textoElements[j];
@@ -179,7 +180,7 @@
       let dicWord = eTexto[i].split(window.nap.operators.assigner).map(
         (wordAtalho, index, array) => {
           if (index % 2 != 0) {
-            let arr = [array[index - 1], wordAtalho, eTexto[i]];
+            let arr = [array[index - 1], wordAtalho, eTexto[i].replaceAll(/\r?\n|\r/g,'')];
             return arr;
           }
         }
@@ -187,7 +188,19 @@
       arrDicionario.push(dicWord[0]);
 
     }
+    console.log(arrDicionario);
     return (arrDicionario);
+  }
+  
+  function npNormalize(texto){
+    /**
+     * Efetua operações de limpeza e tratamento no texto
+     * @return String Texto nomarlizado
+     * */
+    let rTexto = texto;
+    rTexto.trim();
+    rTexto.replaceAll(/:\s|\s:/gm,':');
+    return rTexto;
   }
 
   function npReplaceWords(dicionario, texto) {
@@ -201,12 +214,10 @@
 
     for (let i = 0; i < dicionario.length; i++) {
       console.log(dicionario[i][0])
-      rTexto = rTexto.replaceAll(window.nap.operators.delimiter + dicionario[i][2], '')
+      rTexto = rTexto.replaceAll(dicionario[i][2], '')
       rTexto = rTexto.replaceAll(dicionario[i][0], dicionario[i][1]);
     }
-    console.log(rTexto)
     return rTexto;
-
   }
 
   function uiPrint() {
