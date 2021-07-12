@@ -57,7 +57,7 @@
           clique em transcrever</p>
         <span></span>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-          <button class="btn btn-light mt-2" type="button" id="btnImprimir">Imprimir</button>
+          <button class="btn btn-light btn-sm mt-2 invisible" type="button" id="btnImprimir">Imprimir</button>
         </div>
       </div>
     </div>
@@ -125,6 +125,7 @@
   function btnTranscrever_click() {
     let texto = napToHTML($("#txtaNotacoes").val());
     $("#parsedValueArea").children('p').addClass('invisible');
+    $("#parsedValueArea").find('button').removeClass('invisible');
     $("#parsedValueArea").children('span').html(texto);
   }
 
