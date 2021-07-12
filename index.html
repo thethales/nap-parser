@@ -80,6 +80,10 @@
     words: {
       'charSeparadorChVal': ' -> ',
       'charHTMLLineBrake': '<br>'
+    },
+    operators:{
+      'assigner': ':=',
+      'delimiter': ':'
     }
   }
 
@@ -100,7 +104,7 @@
       case '2':
         //Duas linhas
         texto =
-          "20210611:13H:CC:01:plantio:realizado em terra vegetal obitida do pomar \r\n20210611:14H:CC:01:regagem:plantas foram regadas";
+          "comentário:este texto é um exemplo utilizado para demonstração:\r\n20210611:13H:CC:01:plantio:realizado em terra vegetal obitida do pomar \r\n20210611:14H:CC:01:regagem:plantas foram regadas";
         break;
     }
     $("#txtaNotacoes").val(texto);
@@ -119,9 +123,11 @@
      * Transcreve o conteúdo para texto legível e ordenado em HTML
      **/
 
+
+    //Linhas
     let parsedText = '';
     let lines = texto.split('\n');
-    //Linhas
+    
     for (let l = 0; l < lines.length; l++) {
       parsedText += npParseText(lines[l]) + window.nap.words.charHTMLLineBrake;
     }
@@ -149,7 +155,30 @@
     } //Fim Elementos Unitários
     console.log(pTexto);
     return pTexto;
-    
+
+  }
+
+  function npGerDict(texto) {
+    /**
+     * Gera um dicionário com base nos códigos disponíveis no texto
+     * @return Array[Array[palavra_atalho,valor_atribuido]]
+     * */
+    let arrDicionario = [];
+     let eTexto = texto.match(/(\w*):=(\w*)/gm); //Extrair Delimitadores de Atribuição
+    for(let i=0; i < eTexto.length; i++){
+      let dicWord = eTexto[i].split(window.nap.operators.assigner).map(
+        (wordAtalho,index,array) => {
+          if(index%2!=0){
+            return {
+              [array[index-1]]:(wordAtalho)
+            }
+          }
+        }
+      ).filter((n)=>n)
+      arrDicionario.push(dicWord);
+      
+    }
+    return(arrDicionario);
   }
 </script>
 
