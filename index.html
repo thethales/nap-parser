@@ -81,11 +81,13 @@
     },
     words: {
       'charSeparadorChVal': ' -> ',
-      'charHTMLLineBrake': '<br>'
+      'charHTMLLineBrake': '<br>',
+      'charBlanckSpace': ' '
     },
     operators: {
       'assigner': ':=',
-      'delimiter': ':'
+      'delimiter': ':',
+      'sufixo': '.'
     }
   }
 
@@ -159,10 +161,24 @@
     for (let i = 0; i <= textoElements.length; i++) {
       let j = i + 1;
       if ((j < textoElements.length) && (textoElements[i].length != 0)) {
+        
+        //Inclui chave
         pTexto += textoElements[i];
-        pTexto += window.nap.words.charSeparadorChVal;
+        
+        //Existe aplicação de sufixo 
+        if(textoElements[j].indexOf(window.nap.operators.sufixo)==-1){
+          pTexto += window.nap.words.charSeparadorChVal;
+        }else{
+          pTexto += window.nap.words.charBlanckSpace;
+        }
+
+        //Inclui valor
         pTexto += textoElements[j];
+
+        //Incluir quebra de linha
         pTexto += window.nap.words.charHTMLLineBrake;
+
+        //Fim do par associativo+
         i = j;
       }
     }
