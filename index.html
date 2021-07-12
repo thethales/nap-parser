@@ -198,8 +198,8 @@
      * @return String Texto nomarlizado
      * */
     let rTexto = texto;
-    rTexto.trim();
-    rTexto.replaceAll(/:\s|\s:/gm,':');
+    rTexto.trim();                      //Remove leading spaces
+    rTexto.replaceAll(/:\s|\s:/gm,':'); //Remove spaces from operator
     return rTexto;
   }
 
