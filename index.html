@@ -6,9 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="">
   <meta name="author" content="thethales">
-  <meta name="generator" content="Hugo 0.84.0">
   <title>nap - Parser</title>
-
 
   <!-- Bootstrap core CSS -->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -35,7 +33,6 @@
 </head>
 
 <body class="d-flex flex-column h-100">
-
   <!-- Begin page content -->
   <main class="flex-shrink-0">
     <div class="container">
@@ -55,11 +52,13 @@
         </div>
       </form>
 
-
       <div id="parsedValueArea" class="jumbotron p-4 mt-3">
         <p class="mt-3 text-center font-italic text-secondary">Nada por aqui. Insira o texto de log na caixa acima e
           clique em transcrever</p>
         <span></span>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+          <button class="btn btn-light mt-2" type="button" id="btnImprimir">Imprimir</button>
+        </div>
       </div>
     </div>
   </main>
@@ -70,30 +69,32 @@
     </div>
   </footer>
 
-
 </body>
 <script src="vendor/jquery/jquery-3.6.0.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <script>
+  //Global Object
   window.nap = {
     env: {
-      testCase : '3'
+      testCase: '3'
     },
     words: {
       'charSeparadorChVal': ' -> ',
       'charHTMLLineBrake': '<br>'
     },
-    operators:{
+    operators: {
       'assigner': ':=',
       'delimiter': ':'
     }
   }
 
+  //Events
   $(document).ready(setUpTestCase(window.nap.env.testCase));
   $("#btnTranscrever").on('click', btnTranscrever_click);
+  $('#btnImprimir').on('click', uiPrint);
 
-
+  //Methods
   function setUpTestCase(testCase) {
     /**
      * Configura um caso de teste na UI
@@ -116,7 +117,7 @@
         break;
 
 
-        
+
     }
     $("#txtaNotacoes").val(texto);
   };
@@ -127,7 +128,6 @@
     $("#parsedValueArea").children('span').html(texto);
   }
 
-
   function napToHTML(texto) {
     /**
      * Protótipo
@@ -136,18 +136,17 @@
 
     //Processar palavras atalho
     let dicionario = npGerDict(texto);
-    texto = npReplaceWords(dicionario,texto);
+    texto = npReplaceWords(dicionario, texto);
 
     //Linhas
     let parsedText = '';
     let lines = texto.split('\n');
-    
+
     for (let l = 0; l < lines.length; l++) {
       parsedText += npParseText(lines[l]) + window.nap.words.charHTMLLineBrake;
     }
     return parsedText;
   }
-
 
   function npParseText(texto) {
     /**
@@ -166,7 +165,6 @@
       }
     }
     return pTexto;
-
   }
 
   function npGerDict(texto) {
@@ -175,42 +173,48 @@
      * @return Array[Array[palavra,atalho,expressão original]]
      * */
     let arrDicionario = [];
-     let eTexto = texto.match(/(\s\w|\w*):=(\s\w|\w*)/gm); //Extrair Delimitadores de Atribuição
-    for(let i=0; i < eTexto.length; i++){
+    let eTexto = texto.match(/(\s\w|\w*):=(\s\w|\w*)/gm); //Extrair Delimitadores de Atribuição
+    for (let i = 0; i < eTexto.length; i++) {
       let dicWord = eTexto[i].split(window.nap.operators.assigner).map(
-        (wordAtalho,index,array) => {
-          if(index%2!=0){
-            let arr = [array[index-1],wordAtalho,eTexto[i]];
+        (wordAtalho, index, array) => {
+          if (index % 2 != 0) {
+            let arr = [array[index - 1], wordAtalho, eTexto[i]];
             return arr;
           }
         }
-      ).filter((n)=>n)
+      ).filter((n) => n)
       arrDicionario.push(dicWord[0]);
-      
+
     }
-    return(arrDicionario);
+    return (arrDicionario);
   }
 
-
-  function npReplaceWords(dicionario,texto){
+  function npReplaceWords(dicionario, texto) {
     /**
      * Substitui as palavras de atalho a partir de um dicionario (vetor de vetores)
      * @dicionario Array; Vetor de Vetores gerado a partir de npGerDic()
      * @texto String; Texto para substituição
      * @return String; texto processado
      * */
-     let rTexto = texto;
+    let rTexto = texto;
 
-     for(let i=0; i < dicionario.length; i++){
-        console.log(dicionario[i][0])
-        rTexto = rTexto.replaceAll(window.nap.operators.delimiter + dicionario[i][2],'')
-        rTexto = rTexto.replaceAll(dicionario[i][0],dicionario[i][1]);
-     }
-     console.log(rTexto)
-     return rTexto;
+    for (let i = 0; i < dicionario.length; i++) {
+      console.log(dicionario[i][0])
+      rTexto = rTexto.replaceAll(window.nap.operators.delimiter + dicionario[i][2], '')
+      rTexto = rTexto.replaceAll(dicionario[i][0], dicionario[i][1]);
+    }
+    console.log(rTexto)
+    return rTexto;
 
   }
-</script>
 
+  function uiPrint() {
+    /**
+     * Triggers print prompt
+     * */
+    window.print();
+    return false;
+  }
+</script>
 
 </html>

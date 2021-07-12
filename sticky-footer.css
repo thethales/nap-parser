@@ -1,6 +1,12 @@
-/* Custom page CSS
--------------------------------------------------- */
-/* Not required for template or sticky footer method. */
+@media print {
+  .container small, form{
+    display: none;
+  }
+
+  #parsedValueArea p, #btnImprimir{
+    display: none;
+  }
+}
 
 .container {
   width: auto;
