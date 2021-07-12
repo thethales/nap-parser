@@ -203,8 +203,8 @@
 
      for(let i=0; i < dicionario.length; i++){
         console.log(dicionario[i][0])
-        rTexto = rTexto.replace(window.nap.operators.delimiter + dicionario[i][2],'')
-        rTexto = rTexto.replace(dicionario[i][0],dicionario[i][1]);
+        rTexto = rTexto.replaceAll(window.nap.operators.delimiter + dicionario[i][2],'')
+        rTexto = rTexto.replaceAll(dicionario[i][0],dicionario[i][1]);
      }
      console.log(rTexto)
      return rTexto;
