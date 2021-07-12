@@ -77,6 +77,9 @@
 
 <script>
   window.nap = {
+    env: {
+      testCase : '3'
+    },
     words: {
       'charSeparadorChVal': ' -> ',
       'charHTMLLineBrake': '<br>'
@@ -87,7 +90,7 @@
     }
   }
 
-  $(document).ready(setUpTestCase('2'));
+  $(document).ready(setUpTestCase(window.nap.env.testCase));
   $("#btnTranscrever").on('click', btnTranscrever_click);
 
 
@@ -106,6 +109,14 @@
         texto =
           "comentário:este texto é um exemplo utilizado para demonstração:\r\n20210611:13H:CC:01:plantio:realizado em terra vegetal obitida do pomar \r\n20210611:14H:CC:01:regagem:plantas foram regadas";
         break;
+      case '3':
+        //Três linhas
+        texto =
+          "comentário:este texto é um exemplo utilizado para demonstração:CC:=cacto:CC:01:regado:às 13h da tarde:AA:=Alface:\r\n20210611:13H:CC:01:plantio:realizado em terra vegetal obitida do pomar \r\n20210611:14H:CC:01:regagem:plantas foram regadas";
+        break;
+
+
+        
     }
     $("#txtaNotacoes").val(texto);
   };
@@ -123,6 +134,9 @@
      * Transcreve o conteúdo para texto legível e ordenado em HTML
      **/
 
+    //Processar palavras atalho
+    let dicionario = npGerDict(texto);
+    texto = npReplaceWords(dicionario,texto);
 
     //Linhas
     let parsedText = '';
@@ -141,8 +155,6 @@
      * */
     let pTexto = '';
     let textoElements = texto.split(':');
-    console.log(texto);
-    //Elementos Unitários
     for (let i = 0; i <= textoElements.length; i++) {
       let j = i + 1;
       if (j < textoElements.length) {
@@ -152,8 +164,7 @@
         pTexto += window.nap.words.charHTMLLineBrake;
         i = j;
       }
-    } //Fim Elementos Unitários
-    console.log(pTexto);
+    }
     return pTexto;
 
   }
@@ -161,24 +172,43 @@
   function npGerDict(texto) {
     /**
      * Gera um dicionário com base nos códigos disponíveis no texto
-     * @return Array[Array[palavra_atalho,valor_atribuido]]
+     * @return Array[Array[palavra,atalho,expressão original]]
      * */
     let arrDicionario = [];
-     let eTexto = texto.match(/(\w*):=(\w*)/gm); //Extrair Delimitadores de Atribuição
+     let eTexto = texto.match(/(\s\w|\w*):=(\s\w|\w*)/gm); //Extrair Delimitadores de Atribuição
     for(let i=0; i < eTexto.length; i++){
       let dicWord = eTexto[i].split(window.nap.operators.assigner).map(
         (wordAtalho,index,array) => {
           if(index%2!=0){
-            return {
-              [array[index-1]]:(wordAtalho)
-            }
+            let arr = [array[index-1],wordAtalho,eTexto[i]];
+            return arr;
           }
         }
       ).filter((n)=>n)
-      arrDicionario.push(dicWord);
+      arrDicionario.push(dicWord[0]);
       
     }
     return(arrDicionario);
+  }
+
+
+  function npReplaceWords(dicionario,texto){
+    /**
+     * Substitui as palavras de atalho a partir de um dicionario (vetor de vetores)
+     * @dicionario Array; Vetor de Vetores gerado a partir de npGerDic()
+     * @texto String; Texto para substituição
+     * @return String; texto processado
+     * */
+     let rTexto = texto;
+
+     for(let i=0; i < dicionario.length; i++){
+        console.log(dicionario[i][0])
+        rTexto = rTexto.replace(window.nap.operators.delimiter + dicionario[i][2],'')
+        rTexto = rTexto.replace(dicionario[i][0],dicionario[i][1]);
+     }
+     console.log(rTexto)
+     return rTexto;
+
   }
 </script>
 
